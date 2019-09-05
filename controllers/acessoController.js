@@ -6,6 +6,11 @@ const hash = require('../hash/hash');
 const colunaSenha = 'C3';
 const doc = new GoogleSpreadsheet(spreedsheetId);
 
+var sendJsonResponse = function(res, status, content){
+    res.status(status);
+    res.json(content);
+}
+
 
 module.exports.acessarPlanilha = async() => {
     try
@@ -21,6 +26,17 @@ module.exports.acessarPlanilha = async() => {
    
 }
 
+module.exports.buscarId = async (req, res, next) => {
+      
+    const info = await this.acessarPlanilha();
+    const folhaDeDados = info.worksheets[0]
+    const linhas = await promisify(folhaDeDados.getRows)({
+        query: 'id = ' + req.body.id.toString()
+    })
+
+    res.json(linhas);        
+}
+
 module.exports.validarSenha = async (req, res, next) => {
       
     const info = await this.acessarPlanilha();
@@ -29,14 +45,30 @@ module.exports.validarSenha = async (req, res, next) => {
         query: 'login = ' + req.body.login
     })
 
-   if(linhas.length > 0){
-        const hashSenha = linhas[0].senha;  
-        var resposta = await hash.validarSenha(req.body.senha, hashSenha);
-        
-        res.json(resposta);
-   }else{
-       res.json(false);
-   }    
+    var obj = {};
+
+    if(linhas){
+        if(linhas.length > 0){
+            obj = {
+                    'nome': linhas[0].nome,
+                    'link': linhas[0].link
+                }
+        }
+
+        if(linhas.length > 0){
+            const hashSenha = linhas[0].senha;  
+            var resposta = await hash.validarSenha(req.body.senha, hashSenha);
+            obj['isValid'] = resposta;
+            sendJsonResponse(res, 200, obj)
+        }else {
+            obj['isValid'] = false;
+            obj['nome'] = '';
+            obj['link'] = '';
+            sendJsonResponse(res, 200, obj)
+        }
+    }else{
+        sendJsonResponse(res, 500, obj)
+    }   
 }
 
 

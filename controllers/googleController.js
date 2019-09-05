@@ -5,6 +5,11 @@ const credentials = require('../credentials.json');
 const spreedsheetId = '19aHDV3tTsfipZgzKySCRqNp9IHtcRbw4k1nwTRpmXGQ';
 const doc = new GoogleSpreadsheet(spreedsheetId);
 
+var sendJsonResponse = function(res, status, content){
+    res.status(status);
+    res.json(content);
+}
+
 
 module.exports.acessarPlanilha = async() => {
     try
@@ -45,6 +50,25 @@ module.exports.buscarId = async (req, res, next) => {
     })
 
     res.json(linhas);        
+}
+
+module.exports.buscarDoc = async (req, res, next) => {
+
+    const info = await this.acessarPlanilha();
+    const folhaDeDados = info.worksheets[0]
+    const linhas = await promisify(folhaDeDados.getRows)({
+        query: 'numero = ' + req.body.numero
+    })
+
+    if(linhas){
+        if (linhas.length > 0){
+            sendJsonResponse(res, 200, linhas);
+        } else {
+            sendJsonResponse(res, 401, null)
+        }
+    }else{
+        sendJsonResponse(res, 500, null)
+    }  
 }
 
 module.exports.removerId = async (req, res, next) => {

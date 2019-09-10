@@ -8,6 +8,7 @@ const { promisify } = require('util')
 const credentials = require('../credentials.json')
 const spreedsheetId = '1crH8vAK_E8wK7Vt8IDy8xN772HENebuXZoBicwmT_ew';
 const doc = new GoogleSpreadsheet(spreedsheetId);
+const ping = require('../controllers/pingController');
 var mid = require('../asyncMiddleware')
 
 router.get('/listarTodas', mid.asyncMiddleware(google.listarTodas))
@@ -18,6 +19,7 @@ router.post('/buscarDoc', mid.asyncMiddleware(google.buscarDoc))
 router.post('/acesso/validar', mid.asyncMiddleware(acesso.validarSenha))
 router.post('/acesso/atualizarSenha', mid.asyncMiddleware(acesso.atualizarSenha))
 router.get('/salvarFoto', mid.asyncMiddleware(fotos.salvarImagem))
+router.get('/ping', ping.ping)
 
 module.exports = router
 

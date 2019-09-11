@@ -44,10 +44,7 @@ module.exports.validarSenha = async (req, res, next) => {
         query: 'login = ' + req.body.login
     })
 
-    console.log(linhas);
-
     var obj = {};
-
 
     if (linhas.length > 0) {
         obj = {
@@ -107,5 +104,15 @@ module.exports.atualizarSenha = async (req, res, next) => {
         res.json(-1);
     }
 
+}
+
+module.exports.salvar = async (req, res, next) => {
+
+    req.body.senha = await hash.gerarSenha(req.body.senha);
+      
+    const info = await this.acessarPlanilha();
+    const folhaDeDados = info.worksheets[0]
+    const response = await promisify(folhaDeDados.addRow)(req.body)
+    res.json(response);        
 }
 

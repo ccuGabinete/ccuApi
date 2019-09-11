@@ -18,6 +18,7 @@ router.post('/removerId', mid.asyncMiddleware(google.removerId))
 router.post('/buscarDoc', mid.asyncMiddleware(google.buscarDoc))
 router.post('/acesso/validar', mid.asyncMiddleware(acesso.validarSenha))
 router.post('/acesso/atualizarSenha', mid.asyncMiddleware(acesso.atualizarSenha))
+router.post('/acesso/salvar', mid.asyncMiddleware(acesso.salvar))
 router.get('/salvarFoto', mid.asyncMiddleware(fotos.salvarImagem))
 router.get('/ping', ping.ping)
 

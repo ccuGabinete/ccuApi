@@ -50,7 +50,7 @@ module.exports.getScca = (req, res, next) => {
                     notificado['cpf'] = result[7];
 
                     if (result.length < 11) {
-                        notificado['auxiliar'] = '';
+                        notificado['nomeaux'] = '';
                         notificado['cpfaux'] = '';
                     } else {
                         notificado['nomeaux'] = result[8];

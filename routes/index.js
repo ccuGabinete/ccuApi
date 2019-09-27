@@ -5,6 +5,7 @@ const google = require('../controllers/googleController');
 const acesso = require('../controllers/acessoController');
 const fotos = require('../controllers/photosController');
 const atendimento = require('../controllers/atendimentoController');
+const scca = require('../controllers/sccaController');
 const spreedsheetId = '1crH8vAK_E8wK7Vt8IDy8xN772HENebuXZoBicwmT_ew';
 var mid = require('../asyncMiddleware');
 
@@ -18,6 +19,8 @@ router.post('/acesso/atualizarSenha', mid.asyncMiddleware(acesso.atualizarSenha)
 router.post('/acesso/salvar', mid.asyncMiddleware(acesso.salvar))
 router.post('/salvarFoto', mid.asyncMiddleware(fotos.salvarImagem))
 router.get('/resposta/:id', atendimento.resposta);
+router.post('/notificado', scca.getScca);
+
 
 module.exports = router
 

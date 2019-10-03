@@ -50,7 +50,7 @@ module.exports.validarSenha = async (req, res, next) => {
         obj = {
             'nome': linhas[0].nome,
             'link': linhas[0].link,
-            'link': linhas[0].setor
+            'setor': linhas[0].setor
         }
 
         const hashSenha = linhas[0].senha;

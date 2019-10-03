@@ -49,7 +49,8 @@ module.exports.validarSenha = async (req, res, next) => {
     if (linhas.length > 0) {
         obj = {
             'nome': linhas[0].nome,
-            'link': linhas[0].link
+            'link': linhas[0].link,
+            'link': linhas[0].setor
         }
 
         const hashSenha = linhas[0].senha;
@@ -60,6 +61,7 @@ module.exports.validarSenha = async (req, res, next) => {
         obj['isValid'] = false;
         obj['nome'] = '';
         obj['link'] = '';
+        obj['setor'] = '';
         sendJsonResponse(res, 401, obj)
     }
 
